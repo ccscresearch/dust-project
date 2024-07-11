@@ -15,8 +15,6 @@ Esta solução envolve um método de detecção de vulnerabilidades em redes IoT
 
 - 📂 resultados/: Pasta auxiliar para armazenar os resultados das execuções e testes do modelo.
 
-README.md: Arquivo de documentação que você está lendo agora, descrevendo o projeto, sua instalação e uso.
-
 - 📦 detectorPortscan.py: Script principal que contém a implementação do detector de varredura de portas.
 
 - 📦 matrizConfusao.py: Script utilizado para gerar a matriz de confusão a partir dos resultados do modelo.
