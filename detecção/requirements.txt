@@ -1,0 +1,8 @@
+numpy==1.25.02
+tensorflow==2.15.0
+scikit-learn==1.4.2
+pandas==2.0.3
+imbalanced-learn==0.12.2
+torch==2.3.0
+adversarial-robustness-toolbox==1.17.1
+tqdm==4.66.0
