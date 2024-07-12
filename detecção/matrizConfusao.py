@@ -1,71 +1,48 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.metrics import confusion_matrix
+import itertools
 
 
-def plot_cm(cm,outcome,title,savename):
-  print(cm)
-  plt.figure(figsize=(20,20),dpi=300)
-  plt.matshow(cm, cmap="OrRd" )
-  plt.title(title, pad=100)
-  plt.colorbar()
-  plt.ylabel('True label')
-  plt.xlabel('Predicted label')
-  #plt.ylabel('Rótulo verdadeiro')
-  #plt.xlabel('Rótulo classificado')
-  ax = plt.gca()
-  from matplotlib.ticker import MultipleLocator; ax.xaxis.set_major_locator(MultipleLocator(1)); ax.yaxis.set_major_locator(MultipleLocator(1))
-  l_col_list = list(outcome)
-  import string
-  for i in range(0,len(l_col_list)):
-    pretty_string = ''.join(filter(lambda x: x in string.printable, l_col_list[i]))
-    l_col_list[i] = pretty_string
+# Função para plotar a matriz de confusão
+def plot_confusion_matrix(cm, classes,
+                          normalize=False,
+                          title='Matriz de Confusão',
+                          cmap=plt.cm.Blues):
+    if normalize:
+        cm = cm.astype('float') / cm.sum(axis=1)[:, np.newaxis]
+        print("Matriz de Confusão Normalizada")
+    else:
+        print('Matriz de Confusão sem Normalização')
 
-  ax.set_xticklabels([''] + l_col_list, rotation=90)
-  ax.set_yticklabels([''] + l_col_list)
+    print(cm)
 
-  # savename='ConfusionMatrix-Multiclass-Original.png'
-  basedir='Figura/'
-  filename=basedir+savename
-  plt.savefig(filename,dpi=300,bbox_inches='tight')
-  plt.show()
+    plt.figure(figsize=(8, 6))
+    plt.imshow(cm, interpolation='nearest', cmap=cmap)
+    plt.title(title)
+    plt.colorbar()
+    tick_marks = np.arange(len(classes))
+    plt.xticks(tick_marks, classes, rotation=45)
+    plt.yticks(tick_marks, classes)
 
-def plot_errors(cm,outcome,title,savename):
-  #Plot of errors
-  row_sums = cm.sum(axis=1, keepdims=True)
-  norm_cm = cm / row_sums
+    fmt = '.2f' if normalize else 'd'
+    thresh = cm.max() / 2.
+    for i, j in itertools.product(range(cm.shape[0]), range(cm.shape[1])):
+        plt.text(j, i, format(cm[i, j], fmt),
+                 horizontalalignment="center",
+                 color="white" if cm[i, j] > thresh else "black")
 
-  np.fill_diagonal(norm_cm, 0)
-  plt.figure(figsize=(20,20),dpi=300)
-  plt.matshow(norm_cm, cmap="OrRd")
-  plt.title(title, pad=100)
-
-  plt.colorbar()
-  ax = plt.gca()
-  from matplotlib.ticker import MultipleLocator; ax.xaxis.set_major_locator(MultipleLocator(1)); ax.yaxis.set_major_locator(MultipleLocator(1))
-  l_col_list = list(outcome)
-  import string
-  for i in range(0,len(l_col_list)):
-    pretty_string = ''.join(filter(lambda x: x in string.printable, l_col_list[i]))
-    l_col_list[i] = pretty_string
-
-  ax.set_xticklabels([''] + l_col_list,rotation=90)
-  ax.set_yticklabels([''] + l_col_list)
-
-  # savename='ErrorMatrix-Multiclass-Original.png'
-  basedir='Figura/'
-  filename=basedir+savename
-  plt.savefig(filename,dpi=300,bbox_inches='tight')
-
+    plt.ylabel('Rótulo Verdadeiro',  fontsize=10)
+    plt.xlabel('Rótulo Previsto',  fontsize=10)
+    plt.tight_layout()
 
 
 def matrizdeconfusao(rounded_cw2_predictions, outcome,y_test):
     
-
   cm = confusion_matrix(y_test,rounded_cw2_predictions)
 
-  plot_cm(cm,outcome,'Matriz de Confusão','matriz.png')
-  plot_errors(cm,outcome,'Matriz de Confusão de Erro','erroMatriz.png')
+  class_names = ['Normal','Ataque']
+  plot_confusion_matrix(cm, classes=class_names, normalize=True)
+  plt.savefig("resultados/matrixConfusion.png")
 
 
-#outcome = np.load(path + 'outcome.npy', allow_pickle=True) ## label
