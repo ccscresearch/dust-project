@@ -19,7 +19,13 @@ Esta solução envolve um método de detecção de vulnerabilidades em redes IoT
 
 - 📦 matrizConfusao.py: Script utilizado para gerar a matriz de confusão a partir dos resultados do modelo.
 
-- 📦 modeloTreinadoIotPort.h5: Arquivo contendo o modelo treinado para detecção de varredura de portas em redes IoT.
+- 📦 modelo_treinado.h5: Arquivo contendo o modelo treinado para detecção de varredura de portas em redes IoT.
 
 ### Como Usar
-	python3 detectorPortscan.py
+Testar com o modelo ja treinado
+
+	python3 detectorPortscan.py 0
+
+Treinar o modelo e testar
+
+	python3 detectorPortscan.py 1
