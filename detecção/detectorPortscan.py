@@ -24,10 +24,13 @@ from tqdm import tqdm
 from tensorflow.keras.callbacks import EarlyStopping
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, classification_report, confusion_matrix
 from matrizConfusao import *
+import requests
+import os
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2' 
 
 tf.compat.v1.disable_eager_execution()
 
-def treinar_rede(train_x, train_y):
+def redeNeural(train_x, train_y):
 
     modelo = Sequential([
         Dense(64, activation='relu', input_shape=(train_x.shape[1],)),
@@ -38,189 +41,173 @@ def treinar_rede(train_x, train_y):
     modelo.compile(optimizer='adam',
                    loss='binary_crossentropy',
                    metrics=['accuracy'])
-    # Treinar o modelo
     
     print(modelo.summary())
 
     modelo.fit(train_x, train_y, epochs=10,batch_size=64,shuffle = True,validation_split=0.1)
 
     # Salvar o modelo treinado
-    modelo.save('todoMundo.h5')
+    #modelo.save('modelo_treinado.h5')
     return modelo
 
+# Função para baixar o arquivo
+def download_file(url, local_path):
+    with requests.get(url, stream=True) as r:
+        r.raise_for_status()
+        with open(local_path, 'wb') as f:
+            for chunk in r.iter_content(chunk_size=8192):
+                f.write(chunk)
 
+def train_model():
 
-arquivo_csv = sys.argv[1]
-csv_teste = sys.argv[2]
+    dropbox_link = "https://www.dropbox.com/scl/fi/8tmdh5awggj5el6kmjcwl/IoT_and_PortScan.csv?rlkey=gzf35kfpzv1p4o9agnnvhrzyr&st=khp16n8u&dl=1"
+    local_filename = "arquivo_csv"
+    print("\n")
+    print(f"Iniciando download de {dropbox_link}...")
+    download_file(dropbox_link, local_filename)
 
-df1 = pd.read_csv(arquivo_csv, index_col = 0, low_memory=False)
-#print(df1)
-#df1 = pd.read_csv(arquivo_csv, index_col = 0, low_memory=False, nrows = 123658)
-df2 = pd.read_csv(csv_teste, low_memory=False)
+    df1 = pd.read_csv(local_filename, index_col = 0, low_memory=False)
 
-#rotulosDF2 = df2['label']
+    train_x = df1.drop(['label','device_mac','label_name'], axis = 1) # seleciona features e ignora a primeira coluna do csv
+    y = df1['label']  # seleciona rotulos "primeira linha do csv"
 
-#df2 = df2[df2['device_mac'] != 'ff:ff:ff:ff:ff:ff']
-#df2 = df2.drop(['label','Flow'],	axis = 1)
-#df2 = df2.drop(['device_mac'], axis = 1)
-#print(df2)
+    le = preprocessing.LabelEncoder()
+    train_y = le.fit_transform(y)
 
-train_x = df1.drop(['label','Flow'], axis = 1) # seleciona features e ignora a primeira coluna do csv
-y = df1['label']  # seleciona rotulos "primeira linha do csv"
+    oversample = RandomOverSampler(sampling_strategy='not majority', random_state = 42)    
+    under_sampling = RandomUnderSampler(sampling_strategy='not minority', random_state = 42)
 
-le = preprocessing.LabelEncoder()
-train_y = le.fit_transform(y)
-print(train_y)
+    pipeline = Pipeline([
+    ('over_sampling', oversample),
+    ('undersampling', under_sampling)
+    ])
 
-oversample = RandomOverSampler(sampling_strategy='not majority', random_state = 42)    
-under_sampling = RandomUnderSampler(sampling_strategy='not minority', random_state = 42)
-
-pipeline = Pipeline([
-('over_sampling', oversample),
-('undersampling', under_sampling)
-])
-
-# Ajuste o pipeline aos dados de treinamento
-
-train_again = int(sys.argv[3])
-
-if train_again == 1:
     print("balanceamento dataset........")
     train_x, train_y = pipeline.fit_resample(train_x, train_y)
-    modelo = treinar_rede(train_x, train_y)
-
-else:
-    # Carregar o modelo treinado
-    modelo = load_model('modeloTreinadoIotPort.h5')
-    print('\n### -- Modelo carregado -- ###\n')
-
-print("########### -----  Amostras Originais  ----- ###########")
-print(df2.values)
-print("\n")
-
-model = Sequential([
-    Dense(64, activation='relu', input_shape=(train_x.shape[1],)),
-    Dense(128, activation='relu'),
-    Dense(256, activation='relu'),
-    Dense(256),
-    tf.keras.layers.LeakyReLU(),
-    tf.keras.layers.BatchNormalization(),
-    tf.keras.layers.Activation('tanh'),
-    Dense(1,  activation='sigmoid')
-])
-
-model.compile(optimizer='adam',
-               loss='binary_crossentropy',
-               metrics=['accuracy'])
-
-###  Predição sem rotulos #####
-print("predizendo.....")
-
-probabilidades = modelo.predict(df2)
-print(df2.shape)
-
-# Calcular a estimativa da probabilidade média de ataque
-estimativa_probabilidade_ataque = np.mean(probabilidades)
-
-# Exibir a estimativa
-print("\nEstimativa da probabilidade média de tráfego estar associado a um ataque:", estimativa_probabilidade_ataque)
-
-limiar = 0.5
-predicoes = np.where(probabilidades > limiar,'Ataque','Tráfego Normal')
-
-print("\n")
-# Conta o número de instâncias classificadas como ataque e tráfego normal
-contagem_ataque = np.sum(predicoes == 'Ataque')
-contagem_normal = np.sum(predicoes == 'Tráfego Normal')
-
-# Calcula a proporção de instâncias classificadas como ataque
-proporcao_ataque = contagem_ataque / len(predicoes)
-proporcao_normal = contagem_normal / len(predicoes)
-
-print("Número de amostras classificadas como ataque:", contagem_ataque)
-print("Número de amostras classificadas como tráfego normal:", contagem_normal)
-print('\n')
-print("[Taxa Verdadeiro positivo] Proporção de amostras classificadas como ataque:", proporcao_ataque)
-print("[Taxa Falso Negativo] Proporção de amostras classificadas como tráfego normal:", proporcao_normal)
-print("\n")
+    modeloNovo = redeNeural(train_x, train_y)
+    test_model(modeloNovo)
 
 
-######################### previsões com os rotulos #################
+def test_model(modeloNovo=None):
 
-df3 = pd.read_csv("./fgsm/labels.csv", low_memory=False)
-#print(df3)
-df3['label'] = np.where(df3['1'] == 1, 1, np.where(df3['0'] == 1, 0, 0))
+    if modeloNovo is None:
+        modelo = load_model('modelo_treinado.h5')           
+        print('\n### -- Modelo carregado -- ###\n')
 
-cont = df3['label'].value_counts()
-print(cont)
+    else:
+        modelo = modeloNovo
 
-rotulos = df3['label'].values
+    dropbox_link = "https://www.dropbox.com/scl/fi/7gg3jh03rrv4xmke9zzgl/Teste_Normal_and_PortScan.csv?rlkey=9pcq9szqa9ednh36v9ftzyigy&st=a4k166de&dl=1"
+    local_filename = "csv_teste"
+    print(f"Iniciando download de {dropbox_link}...")
+    download_file(dropbox_link, local_filename)
 
-verdadeiros_positivos = 0
-falsos_positivos = 0
-verdadeiros_negativos = 0
-falsos_negativos = 0
+    df2 = pd.read_csv(local_filename, index_col = 0, low_memory=False)
+    rotulosDF2 = df2['label'].values
+    df2 = df2.drop(['label','device_mac'],  axis = 1)
 
-# Realiza a contagem elemento a elemento
-for predicao, rotulo in zip(predicoes, rotulos):
-    if predicao == 'Ataque' and rotulo == 1:
-        verdadeiros_positivos += 1
-    elif predicao == 'Ataque' and rotulo == 0:
-        falsos_positivos += 1
+    ###  Predição sem rotulos #####
+    print("predizendo.....")
 
-    elif predicao == 'Tráfego Normal' and rotulo == 0:
-        verdadeiros_negativos += 1
-    elif predicao == 'Tráfego Normal' and rotulo == 1:
-        falsos_negativos += 1
+    probabilidades = modelo.predict(df2)
 
-print(verdadeiros_positivos)
-print(falsos_positivos)
-print("\n")
-print(verdadeiros_negativos)
-print(falsos_negativos)
+    # Calcular a estimativa da probabilidade média de ataque
+    estimativa_probabilidade_ataque = np.mean(probabilidades)
 
-print("\n")
-# Calcular acurácia, precisão, recall, e F1-score
-acuracia = (verdadeiros_positivos + verdadeiros_negativos) / len(rotulos)
-precisao = verdadeiros_positivos / (verdadeiros_positivos + falsos_positivos) if (verdadeiros_positivos + falsos_positivos) != 0 else 0
-recall = verdadeiros_positivos / (verdadeiros_positivos + falsos_negativos) if (verdadeiros_positivos + falsos_negativos) != 0 else 0
-f1_score = 2 * (precisao * recall) / (precisao + recall) if (precisao + recall) != 0 else 0
+    # Exibir a estimativa
+    print("\nEstimativa da probabilidade média de tráfego estar associado a um ataque:", estimativa_probabilidade_ataque)
 
-# Imprime as métricas
-print(f'Acurácia: {acuracia:.2f}')
-print(f'Precisão: {precisao:.2f}')
-print(f'Recall: {recall:.2f}')
-print(f'F1-score: {f1_score:.2f}')
+    limiar = 0.5
+    predicoes = np.where(probabilidades > limiar,'Ataque','Tráfego Normal')
 
-# Fazendo previsões no conjunto de teste
-#y_pred_classes = probabilidades
-y_pred_classes = (probabilidades > limiar).astype(int)
-#y_pred_classes = np.argmax(probabilidades, axis = 1)
-y_test_classes = df3['label'].values
-#y_test_classes = rotulosDF2.values
+    print("\n")
+    # Conta o número de instâncias classificadas como ataque e tráfego normal
+    contagem_ataque = np.sum(predicoes == 'Ataque')
+    contagem_normal = np.sum(predicoes == 'Tráfego Normal')
 
-print(f'Forma de y_test_classes: {y_test_classes.shape}')
-print(f'Forma de y_pred_classes: {y_pred_classes.shape}')
+    # Calcula a proporção de instâncias classificadas como ataque
+    proporcao_ataque = contagem_ataque / len(predicoes)
+    proporcao_normal = contagem_normal / len(predicoes)
 
-# Calculando as métricas
-accuracy = accuracy_score(y_test_classes, y_pred_classes)
-precision = precision_score(y_test_classes, y_pred_classes, average='weighted')
-recall = recall_score(y_test_classes, y_pred_classes, average='weighted')
-#f1 = f1_score(y_test_classes, y_pred_classes, average='weighted')
+    print("Número de amostras classificadas como ataque:", contagem_ataque)
+    print("Número de amostras classificadas como tráfego normal:", contagem_normal)
+    print('\n')
+    print("[Taxa Verdadeiro positivo] Proporção de amostras classificadas como ataque:", proporcao_ataque)
+    print("[Taxa Falso Negativo] Proporção de amostras classificadas como tráfego normal:", proporcao_normal)
+    print("\n")
 
-# Imprimindo as métricas
-print(f'Acurácia: {accuracy}')
-print(f'Precisão: {precision}')
-print(f'Recall: {recall}')
-#print(f'F1-score: {f1}')
 
-vetor = np.unique(df3['label'].values)
-print(vetor)
-target_names = ['Normal','Ataque']
+    ######################### prevdisões com os rotulos #################
 
-# Relatório de Classificação detalhado
-print('\nRelatório de Classificação:')
-print(classification_report(y_test_classes, y_pred_classes, target_names=target_names))
+    print("#### Predições com Rotulos ####")
+    verdadeiros_positivos = 0
+    falsos_positivos = 0
+    verdadeiros_negativos = 0
+    falsos_negativos = 0
 
-rounded = y_pred_classes.astype(int)
-matrizdeconfusao(rounded, target_names, y_test_classes)
+    # Realiza a contagem elemento a elemento
+    for predicao, rotulo in zip(predicoes, rotulosDF2):
+        if predicao == 'Ataque' and rotulo == 1:
+            verdadeiros_positivos += 1
+        elif predicao == 'Ataque' and rotulo == 0:
+            falsos_positivos += 1
+
+        elif predicao == 'Tráfego Normal' and rotulo == 0:
+            verdadeiros_negativos += 1
+        elif predicao == 'Tráfego Normal' and rotulo == 1:
+            falsos_negativos += 1
+
+    # Calcular acurácia, precisão, recall, e F1-score
+    acuracia = (verdadeiros_positivos + verdadeiros_negativos) / len(rotulosDF2)
+    precisao = verdadeiros_positivos / (verdadeiros_positivos + falsos_positivos) if (verdadeiros_positivos + falsos_positivos) != 0 else 0
+    recall = verdadeiros_positivos / (verdadeiros_positivos + falsos_negativos) if (verdadeiros_positivos + falsos_negativos) != 0 else 0
+    f1_score = 2 * (precisao * recall) / (precisao + recall) if (precisao + recall) != 0 else 0
+
+    # Imprime as métricas
+    print(f'Acurácia: {acuracia:.2f}')
+    print(f'Precisão: {precisao:.2f}')
+    print(f'Recall: {recall:.2f}')
+    print(f'F1-score: {f1_score:.2f}')
+
+    # Fazendo previsões no conjunto de teste
+    y_pred_classes = (probabilidades > limiar).astype(int)
+    y_test_classes = rotulosDF2
+
+    accuracy = accuracy_score(y_test_classes, y_pred_classes)
+    precision = precision_score(y_test_classes, y_pred_classes, average='weighted')
+    recall = recall_score(y_test_classes, y_pred_classes, average='weighted')
+    #f1 = f1_score(y_test_classes, y_pred_classes, average='weighted')
+
+    # Imprimindo as métricas
+    print(f'Acurácia: {accuracy}')
+    print(f'Precisão: {precision}')
+    print(f'Recall: {recall}')
+    #print(f'F1-score: {f1}')
+
+    target_names = ['Normal','Ataque']
+
+    # Relatório de Classificação detalhado
+    print('\nRelatório de Classificação:')
+    print(classification_report(y_test_classes, y_pred_classes, target_names=target_names))
+
+    rounded = y_pred_classes.astype(int)
+    matrizdeconfusao(rounded, target_names, y_test_classes)
+
+if __name__ == "__main__":
+    if len(sys.argv) != 2:
+        print("Usage: python script.py <train_again>")
+        sys.exit(1)
+
+    try:
+        train_again = int(sys.argv[1])
+    except ValueError:
+        print("The argument must be an integer (1 to train, 0 to test).")
+        sys.exit(1)
+
+    if train_again == 1:
+        train_model()
+    elif train_again == 0:
+        test_model()
+    else:
+        print("The argument must be either 1 (to train) or 0 (to test).")
+        sys.exit(1)
