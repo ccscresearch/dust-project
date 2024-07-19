@@ -1,0 +1,9 @@
+{
+  "qdtePortscan": 25000,
+  "qtdeDados": 25000,
+  "labels_map": { "0": "DATA", "1": "ATTACK" },
+  "accuracies": {
+    "adversaries": 50,
+    "original": 50
+  }
+}
