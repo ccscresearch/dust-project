@@ -118,7 +118,16 @@ const ConfusionMatrixContainer: React.FC<ConfusionMatrixContainerProps> = ({
   return (
     <Container maxWidth={false} sx={{ px: 1 }}>
       {error ? (
-        <Alert severity="error">{error}</Alert>
+        dataType === 'original' ? (
+          <Alert severity="error">{error}</Alert>
+        ) : (
+          <>
+            <Alert severity="warning">
+              Ainda não foram carregados arquivos ou o processamento não foi
+              concluído.
+            </Alert>
+          </>
+        )
       ) : data ? (
         <>
           {dataType === 'adversarial' &&

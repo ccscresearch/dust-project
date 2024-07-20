@@ -102,6 +102,19 @@ function DefenseModel() {
     );
   }
 
+  if (JSON.stringify(data) === '-10' || JSON.stringify(data) === '-1') {
+    return (
+      <BaseLayout>
+        <Container
+          maxWidth={false}
+          sx={{ px: 1, pt: { xs: '1vh', sm: '1vh', md: '2vh' } }}
+        >
+          <Alert severity="error">{'Não há arquivos na pasta'}</Alert>
+        </Container>
+      </BaseLayout>
+    );
+  }
+
   return (
     <BaseLayout>
       <Container

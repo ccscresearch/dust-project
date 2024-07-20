@@ -44,7 +44,6 @@ const Database: React.FC = () => {
 
   useEffect(() => {
     fetchData();
-    console.log('🚀 ~ useEffect ~ fetchData:');
 
     // Define o intervalo para verificar o status a cada 3 horas
     intervalId.current = setInterval(fetchData, 3 * 60 * 60 * 1000);

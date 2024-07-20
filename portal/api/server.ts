@@ -36,16 +36,20 @@ const findLatestFile = (dir: string, ext: string): string | null => {
   try {
     const files = fs.readdirSync(dir);
     const filteredFiles = files.filter((file) => file.endsWith(ext));
+
+    // Retorna null se nenhum arquivo for encontrado
     if (filteredFiles.length === 0) {
       return null;
     }
+
     return filteredFiles.sort(
       (a, b) =>
         fs.statSync(path.join(dir, b)).mtime.getTime() -
         fs.statSync(path.join(dir, a)).mtime.getTime()
     )[0];
-  } catch (error) {
-    console.error(`Erro ao encontrar o arquivo mais recente em ${dir}:`, error);
+  } catch (error: unknown) {
+    // Retorna null se ocorrer um erro ao ler a pasta
+    console.error(`Erro ao ler a pasta ${dir}:`, error);
     return null;
   }
 };
@@ -91,9 +95,10 @@ app.get("/processingStatus", async (req: Request, res: Response) => {
     const formattedEmail = formatEmail(email);
     const userDir = `./uploads/${formattedEmail}`;
 
-    // Verifica se a pasta do usuário existe
+    // Cria a pasta do usuário se não existir
     if (!fs.existsSync(userDir)) {
-      return res.status(404).send("-1"); // Usuário não encontrado
+      fs.mkdirSync(userDir, { recursive: true });
+      return res.status(200).send("-1"); // Pasta criada, nenhum arquivo encontrado
     }
 
     const latestFile = findLatestFile(userDir, "");
@@ -118,7 +123,6 @@ app.get("/processingStatus", async (req: Request, res: Response) => {
     return res.status(500).send("Erro ao verificar o status de processamento.");
   }
 });
-
 // Rota para obter o arquivo JSON do banco de dados
 app.get("/databaseJSONFile", (req: Request, res: Response) => {
   try {
@@ -157,11 +161,18 @@ app.get("/defenseJSONFile/", (req: Request, res: Response) => {
     const formattedEmail = formatEmail(email);
     const userDir = `./defenseModel/${formattedEmail}`;
 
+    // Cria a pasta do usuário se não existir
+    if (!fs.existsSync(userDir)) {
+      fs.mkdirSync(userDir, { recursive: true });
+      return res.status(200).send("-10"); // Pasta criada, nenhum arquivo encontrado
+    }
+
     // Encontra o arquivo JSON mais recente
     const latestJsonFile = findLatestFile(userDir, ".json");
+    console.log("🚀 ~ app.get ~ latestJsonFile:", latestJsonFile);
 
     if (!latestJsonFile) {
-      return res.status(404).send("Nenhum arquivo JSON encontrado.");
+      return res.status(200).send("-1"); // Nenhum arquivo encontrado
     }
 
     const filePath = path.join(userDir, latestJsonFile);
