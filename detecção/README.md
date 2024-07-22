@@ -24,3 +24,17 @@ Testar com o modelo ja treinado
 Treinar o modelo e testar
 
 	python3 detectorPortscan.py 1
+
+### Dataset Utilizados
+
+Conjunto de dados de Ataque de Varredura de Portas
+
+- [CIC-IDS2017](https://www.unb.ca/cic/datasets/ids-2017.html)
+- [MSCAD](https://ieee-dataport.org/documents/multi-step-cyber-attack-dataset-mscad-intrusion-detection)
+- [EDGE-IIOTSET](https://ieee-dataport.org/documents/edge-iiotset-new-comprehensive-realistic-cyber-security-dataset-iot-and-iiot-applications)
+- [PORT-ATACK](https://ieee-dataport.org/documents/dataset-port-scanning-attacks-emulation-testbed-and-hardware-loop-testbed)
+
+Conjunto de dados de Tráfego Normal de dispositivos IoT
+
+- [IoT Traffic Analysis](https://iotanalytics.unsw.edu.au/iottraces.html)
+- [Cenário Experimental](https://drive.google.com/file/d/1J4-9eby8X8NYYM0o3cxR75GFdfIiqcVG/view)
