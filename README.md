@@ -7,11 +7,12 @@
 ## Dados do Projeto
 
 **Instituições Participantes do projeto:**
--Universidade Federal de Minas Gerais (UFMG)
--Universidade Federal de Santa Maria (UFSM)
--Universidade Federal do Paraná (UFPR)
+ - Universidade Federal de Minas Gerais (UFMG)
+ - Universidade Federal de Santa Maria (UFSM)
+ - Universidade Federal do Paraná (UFPR)
+
 **Número do Processo FAPESP:**
--2021/06733-6
+ - 2021/06733-6
 
 ## Resumo
 
