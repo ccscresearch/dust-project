@@ -33,3 +33,14 @@ Este repositório está organizado em uma estrutura de diretórios onde cada um 
 ## Resultados
 
 
+## Membros do projeto
+**Equipe de pesquisa**
+ - Aldri Luiz dos Santos  UFMG
+ - Michele Nogueira Lima  UFMG
+ - Aurora Pozo  UFPR
+ - Ricardo T. Macedo  UFSM
+
+**Corpo técnico**
+ - Fernando Nakayama - Bolsista TT4A
+ - Uelinton Brzolin - Bolsista TT4
+ - Thiago Nakao - Bolsista TT4
