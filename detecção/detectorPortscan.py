@@ -6,22 +6,13 @@ from sklearn import preprocessing
 import sys
 import pandas as pd
 from sklearn.model_selection import train_test_split
-from sklearn.metrics import roc_curve, auc
 from sklearn.metrics import classification_report, accuracy_score
 from tensorflow.keras.models import save_model, load_model
 from imblearn.over_sampling import RandomOverSampler
 from imblearn.under_sampling import RandomUnderSampler
 from imblearn.pipeline import Pipeline
-from art.attacks.evasion import FastGradientMethod, ProjectedGradientDescent
-from art.estimators.classification import KerasClassifier
-from art.attacks.evasion import SaliencyMapMethod
-from art.attacks.evasion import CarliniL2Method
-from art.estimators.classification import PyTorchClassifier
 import tensorflow as tf
-import torch.optim as optim
-from art.estimators.classification import TensorFlowV2Classifier
 from tqdm import tqdm
-from tensorflow.keras.callbacks import EarlyStopping
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, classification_report, confusion_matrix
 from matrizConfusao import *
 import requests
@@ -58,13 +49,16 @@ def download_file(url, local_path):
             for chunk in r.iter_content(chunk_size=8192):
                 f.write(chunk)
 
-def train_model():
+def train_model(local=None):
 
-    dropbox_link = "https://www.dropbox.com/scl/fi/8tmdh5awggj5el6kmjcwl/IoT_and_PortScan.csv?rlkey=gzf35kfpzv1p4o9agnnvhrzyr&st=khp16n8u&dl=1"
-    local_filename = "arquivo_csv"
-    print("\n")
-    print(f"Iniciando download de {dropbox_link}...")
-    download_file(dropbox_link, local_filename)
+    if local is None:
+        dropbox_link = "https://www.dropbox.com/scl/fi/8tmdh5awggj5el6kmjcwl/IoT_and_PortScan.csv?rlkey=gzf35kfpzv1p4o9agnnvhrzyr&st=khp16n8u&dl=1"
+        local_filename = "arquivo_csv"
+        print("\n")
+        print(f"Iniciando download de {dropbox_link}...")
+        download_file(dropbox_link, local_filename)
+    else:
+        local_filename = 'treino-preProcessamento.csv'
 
     df1 = pd.read_csv(local_filename, index_col = 0, low_memory=False)
 
@@ -85,22 +79,25 @@ def train_model():
     print("balanceamento dataset........")
     train_x, train_y = pipeline.fit_resample(train_x, train_y)
     modeloNovo = redeNeural(train_x, train_y)
-    test_model(modeloNovo)
+    test_model(modeloNovo,local='1')
 
 
-def test_model(modeloNovo=None):
+def test_model(modeloNovo=None,local=None):
 
     if modeloNovo is None:
-        modelo = load_model('modelo_treinado.h5')           
+        modelo = load_model('modelo_treinado.h5')             
         print('\n### -- Modelo carregado -- ###\n')
 
     else:
         modelo = modeloNovo
 
-    dropbox_link = "https://www.dropbox.com/scl/fi/7gg3jh03rrv4xmke9zzgl/Teste_Normal_and_PortScan.csv?rlkey=9pcq9szqa9ednh36v9ftzyigy&st=a4k166de&dl=1"
-    local_filename = "csv_teste"
-    print(f"Iniciando download de {dropbox_link}...")
-    download_file(dropbox_link, local_filename)
+    if local is None:
+        dropbox_link = "https://www.dropbox.com/scl/fi/7gg3jh03rrv4xmke9zzgl/Teste_Normal_and_PortScan.csv?rlkey=9pcq9szqa9ednh36v9ftzyigy&st=a4k166de&dl=1"
+        local_filename = "csv_teste"
+        print(f"Iniciando download de {dropbox_link}...")
+        download_file(dropbox_link, local_filename)
+    else:
+        local_filename = 'teste-preProcessamento.csv'
 
     df2 = pd.read_csv(local_filename, index_col = 0, low_memory=False)
     rotulosDF2 = df2['label'].values
@@ -195,19 +192,21 @@ def test_model(modeloNovo=None):
 
 if __name__ == "__main__":
     if len(sys.argv) != 2:
-        print("Usage: python script.py <train_again>")
+        print("Uso: python script.py <train_again>")
         sys.exit(1)
 
     try:
         train_again = int(sys.argv[1])
     except ValueError:
-        print("The argument must be an integer (1 to train, 0 to test).")
+        print("O argumento deve ser um número inteiro (1 para treinar, 0 para testar).")
         sys.exit(1)
 
     if train_again == 1:
         train_model()
     elif train_again == 0:
         test_model()
+    elif train_again == 2:
+        train_model(local='1')
     else:
-        print("The argument must be either 1 (to train) or 0 (to test).")
+        print("O argumento deve ser 1 (para treinar) ou 0 (para testar).")
         sys.exit(1)
