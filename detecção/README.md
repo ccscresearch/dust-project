@@ -50,7 +50,7 @@ Conjunto de dados de Tráfego Normal de dispositivos IoT
 
 Para realizar o pré-processamento dos PCAPs, é necessário baixar os PCAPs de varreduras de portas e tráfego normal disponíveis nos links acima e salvá-los na pasta pcaps, seguindo a estrutura das subpastas:
 
-- 📂 pcaps/port_scan´-> CIC-IDS2017, MSCAD, EDGE-IIOTSET, PORT-ATTACK
+- 📂 pcaps/port_scan-> CIC-IDS2017, MSCAD, EDGE-IIOTSET, PORT-ATTACK
 - 📂 pcaps/trafego_normal -> IoT Traffic Analysis e Cenário Experimental
 
 Após os pcaps em suas respectivas subpastas, excute:
