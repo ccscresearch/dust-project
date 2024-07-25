@@ -41,3 +41,8 @@ Este repositório está organizado em uma estrutura de diretórios onde cada um 
  - Fernando Nakayama - Bolsista TT4A
  - Uelinton Brzolin - Bolsista TT4
  - Thiago Nakao - Bolsista TT4
+
+**Voluntários** 
+ - Ana Luiza Macêdo
+ - Guilherme Guerra
+ - João Vitor Ferreira
