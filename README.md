@@ -28,10 +28,18 @@ Este repositório está organizado em uma estrutura de diretórios onde cada um 
  - [Portal](https://github.com/ccscresearch/dust-project/tree/main/interface) - Arquivos relacionados à interface gráfica de gerenciamento e exibição de resultados
 
 ## Resultados
-![Modelo de detecção](https://github.com/ccscresearch/dust-project/blob/main/img/matrixConfusion.png)
 
-<img src="https://github.com/ccscresearch/dust-project/blob/main/img/matrixConfusion.png" alt="drawing" width="200"/>
+<img src="https://github.com/ccscresearch/dust-project/blob/main/img/matrixConfusion.png" alt="drawing" width="450"/>
 
+<img src="https://github.com/ccscresearch/dust-project/blob/main/img/confMat20.png" alt="drawing" width="450"/>
+
+<img src="https://github.com/ccscresearch/dust-project/blob/main/img/confMatCarlini3.png" alt="drawing" width="450"/>
+
+<img src="https://github.com/ccscresearch/dust-project/blob/main/img/confMatFGSM3.png" 
+alt="drawing" width="450"/>
+
+<img src="https://github.com/ccscresearch/dust-project/blob/main/img/matrixConfusionAdv.png" 
+alt="drawing" width="450"/>
 
 ## Membros do projeto
 **Equipe de pesquisa**
