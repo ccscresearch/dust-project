@@ -33,7 +33,7 @@ Resultado proveniente da primeira linha de pesquisa que investigou a possibilida
 
 <img src="https://github.com/ccscresearch/dust-project/blob/main/img/matrixConfusion.png" alt="drawing" width="450" align="center"/>
 
-O próximo resultado está relacionado à capacidade de um modelo de aprendizagem de máquina adversarial (modelo que gera amostras adversariais a partir do tráfego real), em induzir ao erro um segundo modelo que tenha alta acurácia na classificação de dados. Neste cenário específico, utilizou-se um conjunto de dados composto por diversas classes que representam tipos de tráfego de rede. O modelo originalmente tem a capacidade de classificar corretamente as classes com uma acurácia de aproximadamente 99%. A figura abaixo ilustra o resultado da classificação após a geração e inserção das amostras adversariais geradas pelo modelo adversarial.
+O próximo resultado está relacionado à capacidade de um modelo de aprendizagem de máquina adversarial (modelo que gera amostras adversariais a partir do tráfego real), em induzir ao erro um segundo modelo que tenha alta acurácia na classificação de dados. Neste cenário específico, utilizou-se um conjunto de dados composto por diversas classes que representam tipos de tráfego de rede. O modelo originalmente tem a capacidade de classificar corretamente as classes com uma acurácia de aproximadamente 99%. A figura abaixo ilustra o resultado da classificação após a geração e inserção das amostras adversariais geradas pelo modelo adversarial, a média de acurácia considerando-se todas as classes caiu para cerca de 1%.
 
 <img src="https://github.com/ccscresearch/dust-project/blob/main/img/confMat20.png" alt="drawing" width="450" align="center"/>
 
