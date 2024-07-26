@@ -22,12 +22,15 @@ Este projeto atua na prevenção de vazamentos de informações na transmissão 
 
 Este repositório está organizado em uma estrutura de diretórios onde cada um representa uma linha de ações do projeto. A descrição dos diretórios é como segue:
 
- - [Amostras](https://github.com/ccscresearch/dust-project/tree/main/amostras) - Descrição
+ - [Amostras](https://github.com/ccscresearch/dust-project/tree/main/amostras) - Arquivos relacionados ao modelo de geração de amostras adversariais
  - [Apresentações](https://github.com/ccscresearch/dust-project/tree/main/apresentacoes) - Apresentações realizadas por membros do projeto
- - [Detecção](https://github.com/ccscresearch/dust-project/tree/main/detec%C3%A7%C3%A3o "detecção") - Descrição
- - [Portal](https://github.com/ccscresearch/dust-project/tree/main/interface) - Arquivos da interface gráfica de gerenciamento e exibição de resultados
+ - [Detecção](https://github.com/ccscresearch/dust-project/tree/main/detec%C3%A7%C3%A3o "detecção") - Arquivos relacionados ao modelo de detecção de comportamentos com base em características encontradas em fluxos de dados de redes
+ - [Portal](https://github.com/ccscresearch/dust-project/tree/main/interface) - Arquivos relacionados à interface gráfica de gerenciamento e exibição de resultados
 
 ## Resultados
+![Modelo de detecção](https://github.com/ccscresearch/dust-project/blob/main/img/matrixConfusion.png)
+
+<img src="https://github.com/ccscresearch/dust-project/blob/main/img/matrixConfusion.png" alt="drawing" width="200"/>
 
 
 ## Membros do projeto
