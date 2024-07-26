@@ -1,3 +1,5 @@
+![DUST Logo](https://github.com/ccscresearch/dust-project/blob/main/img/dust_logo.png)
+
 ## Descrição etapa de Detecção
 
 Esta solução envolve um método de detecção de vulnerabilidades em redes IoT, mais especificamente a detecção de varredura de portas, sem conhecimento prévio da estrutura da rede, dispensando rótulos na base de teste para a detecção.
