@@ -29,6 +29,7 @@ Este repositório está organizado em uma estrutura de diretórios onde cada um 
 
 ## Resultados
 
+Resultado proveniente da primeira linha de pesquisa que investigou a possibilidade de detectar um comportamento específico baseado em características encontradas no tráfego de uma rede de computadores. O modelo de detecção proposto foi configurado para identificar um ataque de varredura de dados a partir de uma captura de tráfego de rede. Embora o comportamento detectado neste caso especificamente é relacionado a uma ataque, é possível criar perfis de comportamento para dispositivos e ameaças.
 <img src="https://github.com/ccscresearch/dust-project/blob/main/img/matrixConfusion.png" alt="drawing" width="450"/>
 
 <img src="https://github.com/ccscresearch/dust-project/blob/main/img/confMat20.png" alt="drawing" width="450"/>
