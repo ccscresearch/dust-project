@@ -25,7 +25,7 @@ Este repositório está organizado em uma estrutura de diretórios onde cada um 
  - [Amostras](https://github.com/ccscresearch/dust-project/tree/main/amostras) - Descrição
  - [Apresentações](https://github.com/ccscresearch/dust-project/tree/main/apresentacoes) - Apresentações realizadas por membros do projeto
  - [Detecção](https://github.com/ccscresearch/dust-project/tree/main/detec%C3%A7%C3%A3o "detecção") - Descrição
- - [Portal](https://github.com/ccscresearch/dust-project/tree/main/portal) - Arquivos da interface gráfica de gerenciamento e exibição de resultados
+ - [Portal](https://github.com/ccscresearch/dust-project/tree/main/interface) - Arquivos da interface gráfica de gerenciamento e exibição de resultados
 
 ## Resultados
 
