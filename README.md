@@ -1,4 +1,4 @@
-![DUST Logo](https://github.com/ccscresearch/dust-project/blob/main/img/dust_logo.png)
+![DUST Logo](https://github.com/ccscresearch/dust-project/blob/main/img/dust_logo.png) ![DUST Logo]( https://github.com/ccscresearch/dust-project/blob/main/img/fapesp.jpeg)
 
 # Projeto DUST
 
