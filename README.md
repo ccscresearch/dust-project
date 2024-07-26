@@ -1,4 +1,5 @@
-![DUST Logo](https://github.com/ccscresearch/dust-project/blob/main/img/dust_logo.png) <img src="https://https://github.com/ccscresearch/dust-project/blob/main/img/fapesp.jpeg" alt="drawing" width="200" align="right"/>
+![DUST Logo](https://github.com/ccscresearch/dust-project/blob/main/img/dust_logo.png) <img src="https://github.com/ccscresearch/dust-project/blob/main/img/fapesp.jpeg" alt="drawing" width="200" align="right"/>
+
 # Projeto DUST
 
 **Identificação e Ofuscação de Vulnerabilidades de Segurança e de Comportamentos na IoT**
