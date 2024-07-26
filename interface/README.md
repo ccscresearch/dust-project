@@ -192,4 +192,3 @@ A interface do Dust apresenta os resultados das análises de forma clara e intui
 
 - *Classificação Final:* Exibição da classificação final dos dados, indicando a probabilidade de um ataque de varredura de porta estar presente.
 - *Visualização da Classificação:* Gráfico intuitivo que destaca os dados classificados como ataque e tráfego normal, permitindo uma rápida identificação de potenciais ameaças.
--
