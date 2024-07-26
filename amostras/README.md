@@ -1,6 +1,6 @@
 ## Descrição etapa de gerar as amostras adversárias
 
-Esta solução envolve abordagens que exploram abordagens adversárias para reduzir o desempenho de redes neurais que tentam identificar ataques de varredura de porta. Antes desse passo, também houve a replicação de abordagens adversariais exploradas previamente na literatura.
+Esta solução envolve mecanismos que exploram abordagens adversárias para reduzir o desempenho de redes neurais que tentam identificar ataques de varredura de porta. Antes desse passo, também houve a replicação de abordagens adversariais exploradas previamente na literatura.
 
 
 ### Instalação
