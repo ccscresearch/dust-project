@@ -25,7 +25,7 @@ Este repositório está organizado em uma estrutura de diretórios onde cada um 
  - [Amostras](https://github.com/ccscresearch/dust-project/tree/main/amostras) - Arquivos relacionados ao modelo de geração de amostras adversariais
  - [Apresentações](https://github.com/ccscresearch/dust-project/tree/main/apresentacoes) - Apresentações realizadas por membros do projeto
  - [Detecção](https://github.com/ccscresearch/dust-project/tree/main/detec%C3%A7%C3%A3o "detecção") - Arquivos relacionados ao modelo de detecção de comportamentos
- - [Portal](https://github.com/ccscresearch/dust-project/tree/main/interface) - Arquivos relacionados à interface gráfica de gerenciamento e exibição de resultados
+ - [Interface gráfica](https://github.com/ccscresearch/dust-project/tree/main/interface) - Arquivos relacionados à interface gráfica de gerenciamento e exibição de resultados
 
 ## Resultados
 
