@@ -1,5 +1,5 @@
 ![DUST Logo](https://github.com/ccscresearch/dust-project/blob/main/img/dust_logo.png)
-## Documentação de Requisitos do Sistema DUST
+## Documentação de Requisitos para Interface Gráfica do Sistema DUST
 
 ## 1. Visão Geral
 
