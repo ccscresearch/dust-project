@@ -5,6 +5,9 @@
 
 A conjunção das soluções propostas ao longo do projeto originaram a plataforma chamada DUST. O objetivo da plataforma é ser uma alternativa para reforçar a garantia da privacidade dos dados de usuários de dispositivos da IoT.
 
+![DUST Logo](https://github.com/ccscresearch/dust-project/blob/main/img/DUST_abertura.png)
+
+![DUST Logo](https://github.com/ccscresearch/dust-project/blob/main/img/DUST_resultados.png)
 ## 2. Requisitos do Sistema
 
 Para garantir o funcionamento adequado do Dust, certifique-se de que o seu sistema atenda aos seguintes requisitos:
