@@ -2,7 +2,7 @@ import axios from 'axios';
 
 // Configuração base da URL da API
 const api = axios.create({
-  baseURL: 'http://localhost:3001',
+  baseURL: 'http://192.168.10.23:3001',
 });
 
 // Função para enviar o arquivo

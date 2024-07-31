@@ -11,7 +11,7 @@ const app = express();
 // Configuração do CORS
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: "http://192.168.10.23",
     methods: ["GET", "POST", "PUT", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"],
   })
